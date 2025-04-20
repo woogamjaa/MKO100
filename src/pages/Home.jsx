@@ -1,13 +1,15 @@
 import React from 'react';
 import Container from '../components/common/Container';
+import Section01 from '../components/sections/Section01';
 
 const Home = () => {
   return (
     <Container>
+         <Section01 />
       <section className="hero">
-        {/* 여기에 메인 섹션 내용 */}
+        {   }   
+       
       </section>
-      {/* 추가 섹션들 */}
     </Container>
   );
 };

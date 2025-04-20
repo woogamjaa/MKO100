@@ -12,9 +12,8 @@ function App() {
       <Layout>
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/Faq" element={<Faq />} /> {/* FAQ 컴포넌트 필요 */}
-          <Route path="/With" element={<With />} /> {/* With 컴포넌트 필요 */}
-          {/* 추가 경로 설정 */}
+          <Route path="/Faq" element={<Faq />} /> 
+          <Route path="/With" element={<With />} /> 
         </Routes>
       </Layout>
     </Router>
