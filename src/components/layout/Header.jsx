@@ -32,7 +32,7 @@ const Header = () => {
           <div className="menu-content">
             <div className="menu-items">
               <Link to="/" onClick={() => setMenuOpen(false)}>TOP 100</Link>
-              <Link to="/FAQ" onClick={() => setMenuOpen(false)}>FAQ</Link>
+              <Link to="/Faq" onClick={() => setMenuOpen(false)}>FAQ</Link>
               <Link to="/With" onClick={() => setMenuOpen(false)}>WITH</Link>
             </div>
           </div>
