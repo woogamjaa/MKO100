@@ -5,9 +5,7 @@ import Section01 from '../components/sections/Section01';
 const Home = () => {
   return (
     <Container>
-       
       <section className="hero">
-        {   }   
         <Section01 />
       </section>
     </Container>
