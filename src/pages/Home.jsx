@@ -1,6 +1,6 @@
 import React from 'react';
 import Container from '../components/common/Container';
-import Section01 from '../components/sections/Section01';
+import Section01 from '../components/sections/section01';
 
 const Home = () => {
   return (

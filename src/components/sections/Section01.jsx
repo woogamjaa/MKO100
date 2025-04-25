@@ -47,13 +47,16 @@ const Section01 = () => {
     backLight.position.set(-5, 5, -5);
     scene.add(backLight);
     
-    // 컨트롤 추가 (마우스로 모델 회전 가능)
+    // 컨트롤 설정 부분 수정
     const controls = new OrbitControls(camera, renderer.domElement);
     controls.enableDamping = true;
     controls.dampingFactor = 0.05;
     controls.rotateSpeed = 0.8; // 회전 속도 조정
-    controls.enableZoom = true; // 줌 활성화
-    controls.enablePan = false; // 패닝 비활성화 (이동 방지)
+    controls.enableZoom = false; // 줌 비활성화
+    controls.enablePan = false; // 패닝 비활성화
+    controls.minPolarAngle = Math.PI / 2; // 수직 회전 제한 (90도)
+    controls.maxPolarAngle = Math.PI / 2; // 수직 회전 제한 (90도)
+    controls.enableRotate = true; // 회전 활성화
     
     const loader = new GLTFLoader();
     loader.load(
@@ -66,7 +69,7 @@ const Section01 = () => {
         
         // 모델 크기 및 위치 조정
         const maxDim = Math.max(size.x, size.y, size.z);
-        const scale = 5 / maxDim; // 적절한 크기로 조정
+        const scale = 7 / maxDim; // 적절한 크기로 조정
         gltf.scene.scale.set(scale, scale, scale);
         
         // 모델의 중심이 원점에 오도록 위치 조정
