@@ -8,7 +8,7 @@ const Section02 = () => {
   // 날짜를 melon JSON 파일명 형식으로 변환
   const getTodayString = (offset = 0) => {
     const dateObj = new Date();
-    dateObj.setDate(dateObj.getDate() + offset); // offset: 0 = today, -1 = yesterday
+    dateObj.setDate(dateObj.getDate() + offset); // offset: 0 = today, -1 = yesterday ...
     const month = dateObj.getMonth() + 1;
     const date = dateObj.getDate();
     const year = dateObj.getFullYear();
@@ -16,33 +16,25 @@ const Section02 = () => {
   };
 
   useEffect(() => {
-    const todayStr = getTodayString();
-    const yesterdayStr = getTodayString(-1);
+    const fetchChartData = async () => {
+      for (let offset = 0; offset > -7; offset--) {
+        const dateStr = getTodayString(offset);
+        const url = `https://raw.githubusercontent.com/woogamjaa/Music_Chart_data/main/melon/melon100_${dateStr}.json`;
 
-    const todayUrl = `https://raw.githubusercontent.com/woogamjaa/Music_Chart_data/main/melon/melon100_${todayStr}.json`;
-    const yesterdayUrl = `https://raw.githubusercontent.com/woogamjaa/Music_Chart_data/main/melon/melon100_${yesterdayStr}.json`;
-
-    axios.get(todayUrl)
-      .then((response) => {
-        setChartData(response.data);
-        setLoading(false);
-      })
-      .catch((error) => {
-        if (error.response && error.response.status === 404) {
-          // 오늘 데이터 없으면 어제 데이터로 재시도
-          axios.get(yesterdayUrl)
-            .then((response) => {
-              setChartData(response.data);
-            })
-            .catch((err) => {
-              console.error('어제 데이터도 불러오는 데 실패했습니다:', err);
-            })
-            .finally(() => setLoading(false));
-        } else {
-          console.error('데이터를 불러오는 중 오류 발생:', error);
-          setLoading(false);
+        try {
+          const response = await axios.get(url);
+          setChartData(response.data);
+          break; // 성공 시 반복 종료
+        } catch (err) {
+          if (offset === -6) {
+            console.error('최근 7일간 데이터가 존재하지 않습니다.');
+          }
         }
-      });
+      }
+      setLoading(false);
+    };
+
+    fetchChartData();
   }, []);
 
   if (loading) return <div>데이터 불러오는 중...</div>;
