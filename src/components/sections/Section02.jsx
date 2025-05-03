@@ -5,26 +5,43 @@ const Section02 = () => {
   const [chartData, setChartData] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  // 오늘 날짜를 melon JSON 파일명 형식으로 변환
-  const getTodayString = () => {
-    const today = new Date();
-    const month = today.getMonth() + 1; // getMonth()는 0부터 시작하므로 +1
-    const date = today.getDate();
-    const year = today.getFullYear();
+  // 날짜를 melon JSON 파일명 형식으로 변환
+  const getTodayString = (offset = 0) => {
+    const dateObj = new Date();
+    dateObj.setDate(dateObj.getDate() + offset); // offset: 0 = today, -1 = yesterday
+    const month = dateObj.getMonth() + 1;
+    const date = dateObj.getDate();
+    const year = dateObj.getFullYear();
     return `${month}-${date}-${year}`;
   };
 
   useEffect(() => {
     const todayStr = getTodayString();
-    const url = `https://raw.githubusercontent.com/woogamjaa/Music_Chart_data/main/melon/melon100_${todayStr}.json`;
+    const yesterdayStr = getTodayString(-1);
 
-    axios.get(url)
+    const todayUrl = `https://raw.githubusercontent.com/woogamjaa/Music_Chart_data/main/melon/melon100_${todayStr}.json`;
+    const yesterdayUrl = `https://raw.githubusercontent.com/woogamjaa/Music_Chart_data/main/melon/melon100_${yesterdayStr}.json`;
+
+    axios.get(todayUrl)
       .then((response) => {
         setChartData(response.data);
         setLoading(false);
       })
       .catch((error) => {
-        console.error('데이터를 불러오는 중 오류 발생:', error);
+        if (error.response && error.response.status === 404) {
+          // 오늘 데이터 없으면 어제 데이터로 재시도
+          axios.get(yesterdayUrl)
+            .then((response) => {
+              setChartData(response.data);
+            })
+            .catch((err) => {
+              console.error('어제 데이터도 불러오는 데 실패했습니다:', err);
+            })
+            .finally(() => setLoading(false));
+        } else {
+          console.error('데이터를 불러오는 중 오류 발생:', error);
+          setLoading(false);
+        }
       });
   }, []);
 
