@@ -4,11 +4,11 @@ import axios from 'axios';
 const Section02 = () => {
   const [chartData, setChartData] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [dataDate, setDataDate] = useState(''); // ✅ 날짜 상태 추가
 
-  // 날짜를 melon JSON 파일명 형식으로 변환
   const getTodayString = (offset = 0) => {
     const dateObj = new Date();
-    dateObj.setDate(dateObj.getDate() + offset); // offset: 0 = today, -1 = yesterday ...
+    dateObj.setDate(dateObj.getDate() + offset);
     const month = dateObj.getMonth() + 1;
     const date = dateObj.getDate();
     const year = dateObj.getFullYear();
@@ -24,7 +24,8 @@ const Section02 = () => {
         try {
           const response = await axios.get(url);
           setChartData(response.data);
-          break; // 성공 시 반복 종료
+          setDataDate(dateStr); // ✅ 성공한 날짜 저장
+          break;
         } catch (err) {
           if (offset === -6) {
             console.error('최근 7일간 데이터가 존재하지 않습니다.');
@@ -42,7 +43,7 @@ const Section02 = () => {
   return (
     <div className="section02">
       <div className="section2-content">
-        <h2>Melon Top 100</h2>
+        <h2>Melon Top 100 <span style={{ fontSize: '0.8em', color: '#888' }}>({dataDate} 기준)</span></h2>
         {chartData.map((song) => (
           <div key={song.rank} className="song-item">
             <img src={song.imageURL} alt={song.title} />
