@@ -1,24 +1,39 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import './Section.css'; // CSS 파일 불러오기
 
 const Section02 = () => {
   const [chartData, setChartData] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  // 오늘 날짜를 melon JSON 파일명 형식으로 변환
+  const getTodayString = () => {
+    const today = new Date();
+    const month = today.getMonth() + 1; // getMonth()는 0부터 시작하므로 +1
+    const date = today.getDate();
+    const year = today.getFullYear();
+    return `${month}-${date}-${year}`;
+  };
 
   useEffect(() => {
-    axios.get('https://raw.githubusercontent.com/woogamjaa/Music_Chart_data/main/melon/melon100_5-3-2025.json')
+    const todayStr = getTodayString();
+    const url = `https://raw.githubusercontent.com/woogamjaa/Music_Chart_data/main/melon/melon100_${todayStr}.json`;
+
+    axios.get(url)
       .then((response) => {
         setChartData(response.data);
+        setLoading(false);
       })
       .catch((error) => {
-        console.error('멜론 차트 데이터를 불러오는 중 오류 발생:', error);
+        console.error('데이터를 불러오는 중 오류 발생:', error);
       });
   }, []);
+
+  if (loading) return <div>데이터 불러오는 중...</div>;
 
   return (
     <div className="section02">
       <div className="section2-content">
-        <h2>Top 100</h2>
+        <h2>Melon Top 100</h2>
         {chartData.map((song) => (
           <div key={song.rank} className="song-item">
             <img src={song.imageURL} alt={song.title} />
