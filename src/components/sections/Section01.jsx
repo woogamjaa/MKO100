@@ -1,6 +1,6 @@
 // home 첫 번째 섹션 = 브랜드 메인화면.
 import React from 'react';
-import './Section01.css'; // CSS 파일을 import 합니다.
+import './Section.css'; // CSS 파일을 import 합니다.
 
 const Section01 = () => {
   return (
