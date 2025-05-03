@@ -11,10 +11,20 @@
     font-weight: 700;
 }
 
-.section02 {
-    width: 100%;
-    padding: 25px 200px;
-    position: relative;
+.section2-content {
+    padding: 20px;
+  }
+  
+  .song-item {
     display: flex;
-    background-color: blue;
-}
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+  }
+  
+  .song-item img {
+    width: 60px;
+    height: 60px;
+    object-fit: cover;
+    border-radius: 8px;
+  }
